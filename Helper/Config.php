@@ -56,6 +56,10 @@ class Config extends AbstractHelper
     const PRODUCTS_FILTERS_UPDATED_BETWEEN_BEFORE = 'pimgento/products_filters/updated_between_before';
     const PRODUCTS_FILTERS_UPDATED_SINCE = 'pimgento/products_filters/updated';
     const PRODUCTS_FILTERS_ADVANCED_FILTER = 'pimgento/products_filters/advanced_filter';
+    const PRODUCTS_CATEGORY_REINDEX_DATA = 'pimgento/category/reindex_data';
+    const PRODUCTS_CATEGORY_REINDEX_SELECTION = 'pimgento/category/reindex_selection';
+    const PRODUCTS_CATEGORY_CLEAR_CACHE = 'pimgento/category/clear_cache';
+    const PRODUCTS_CATEGORY_CACHE_SELECTION = 'pimgento/category/cache_selection';
     const PRODUCTS_CATEGORY_IS_ACTIVE = 'pimgento/category/is_active';
     const PRODUCTS_CATEGORY_INCLUDE_IN_MENU = 'pimgento/category/include_in_menu';
     const PRODUCTS_CATEGORY_IS_ANCHOR = 'pimgento/category/is_anchor';
@@ -69,6 +73,19 @@ class Config extends AbstractHelper
     const PRODUCT_ASSET_ENABLED = 'pimgento/product/asset_enabled';
     const PRODUCT_ASSET_GALLERY = 'pimgento/product/asset_gallery';
     const ATTRIBUTE_TYPES = 'pimgento/attribute/types';
+    const ATTRIBUTE_REINDEX_DATA = 'pimgento/attribute/reindex_data';
+    const ATTRIBUTE_REINDEX_SELECTION = 'pimgento/attribute/reindex_selection';
+    const ATTRIBUTE_CLEAR_CACHE = 'pimgento/attribute/clear_cache';
+    const ATTRIBUTE_CACHE_SELECTION = 'pimgento/attribute/cache_selection';
+    const FAMILY_REINDEX_DATA = 'pimgento/family/reindex_data';
+    const FAMILY_REINDEX_SELECTION = 'pimgento/family/reindex_selection';
+    const FAMILY_CLEAR_CACHE = 'pimgento/family/clear_cache';
+    const FAMILY_CACHE_SELECTION = 'pimgento/family/cache_selection';
+    const OPTION_REINDEX_DATA = 'pimgento/option/reindex_data';
+    const OPTION_REINDEX_SELECTION = 'pimgento/option/reindex_selection';
+    const OPTION_CLEAR_CACHE = 'pimgento/option/clear_cache';
+    const OPTION_CACHE_SELECTION = 'pimgento/option/cache_selection';
+
     /**
      * @var int PAGINATION_SIZE_DEFAULT_VALUE
      */
@@ -348,6 +365,166 @@ class Config extends AbstractHelper
         $filters = $this->scopeConfig->getValue(self::PRODUCTS_FILTERS_ADVANCED_FILTER);
 
         return $this->serializer->unserialize($filters);
+    }
+
+    /**
+     * Retrieve the reindex activation after import
+     *
+     * @return string
+     */
+    public function getReindexCategoryData()
+    {
+        return $this->scopeConfig->getValue(self::PRODUCTS_CATEGORY_REINDEX_DATA);
+    }
+
+    /**
+     * Retrieve category reindex selection
+     *
+     * @return string
+     */
+    public function getCategoryReindexSelection()
+    {
+        return $this->scopeConfig->getValue(self::PRODUCTS_CATEGORY_REINDEX_SELECTION);
+    }
+
+    /**
+     * Retrieve the clear cache activation after import
+     *
+     * @return string
+     */
+    public function getCategoryClearCache()
+    {
+        return $this->scopeConfig->getValue(self::PRODUCTS_CATEGORY_CLEAR_CACHE);
+    }
+
+    /**
+     * Retrieve category cache selection
+     *
+     * @return string
+     */
+    public function getCategoryCacheSelection()
+    {
+        return $this->scopeConfig->getValue(self::PRODUCTS_CATEGORY_CACHE_SELECTION);
+    }
+
+    /**
+     * Retrieve the reindex activation after import
+     *
+     * @return string
+     */
+    public function getIsAttributeReindexActive()
+    {
+        return $this->scopeConfig->getValue(self::ATTRIBUTE_REINDEX_DATA);
+    }
+
+    /**
+     * Retrieve attribute index selection
+     *
+     * @return string
+     */
+    public function getAttributeIndexSelection()
+    {
+        return $this->scopeConfig->getValue(self::ATTRIBUTE_REINDEX_SELECTION);
+    }
+
+    /**
+     * Retrieve the clear cache activation after import
+     *
+     * @return string
+     */
+    public function getIsAttributeClearCacheActive()
+    {
+        return $this->scopeConfig->getValue(self::ATTRIBUTE_CLEAR_CACHE);
+    }
+
+    /**
+     * Retrieve attribute cache selection
+     *
+     * @return string
+     */
+    public function getAttributeCacheSelection()
+    {
+        return $this->scopeConfig->getValue(self::ATTRIBUTE_CACHE_SELECTION);
+    }
+
+    /**
+     * Retrieve family reindex activation after import
+     *
+     * @return string
+     */
+    public function getIsFamilyReindexActive()
+    {
+        return $this->scopeConfig->getValue(self::FAMILY_REINDEX_DATA);
+    }
+
+    /**
+     * Retrieve family selection
+     *
+     * @return string
+     */
+    public function getFamilyReindexSelection()
+    {
+        return $this->scopeConfig->getValue(self::FAMILY_REINDEX_SELECTION);
+    }
+
+    /**
+     * Retrieve family clear cache activation after import
+     *
+     * @return string
+     */
+    public function getIsFamilyClearCacheActive()
+    {
+        return $this->scopeConfig->getValue(self::FAMILY_CLEAR_CACHE);
+    }
+
+    /**
+     * Retrieve family cache selection
+     *
+     * @return string
+     */
+    public function getFamilyCacheSelection()
+    {
+        return $this->scopeConfig->getValue(self::FAMILY_CACHE_SELECTION);
+    }
+
+    /**
+     * Retrieve option reindex activation after import
+     *
+     * @return string
+     */
+    public function getIsOptionReindexActive()
+    {
+        return $this->scopeConfig->getValue(self::OPTION_REINDEX_DATA);
+    }
+
+    /**
+     * Retrieve option index selection
+     *
+     * @return string
+     */
+    public function getOptionIndexSelection()
+    {
+        return $this->scopeConfig->getValue(self::OPTION_REINDEX_SELECTION);
+    }
+
+    /**
+     * Retrieve option clear cache activation after import
+     *
+     * @return string
+     */
+    public function getIsOptionCacheClearActive()
+    {
+        return $this->scopeConfig->getValue(self::OPTION_CLEAR_CACHE);
+    }
+
+    /**
+     * Retrieve option cache selection
+     *
+     * @return string
+     */
+    public function getOptionCacheSelection()
+    {
+        return $this->scopeConfig->getValue(self::OPTION_CACHE_SELECTION);
     }
 
     /**
