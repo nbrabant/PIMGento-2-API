@@ -17,6 +17,7 @@ use Magento\Staging\Model\VersionManager;
 use Magento\CatalogUrlRewrite\Model\CategoryUrlPathGenerator;
 use Magento\CatalogUrlRewrite\Model\CategoryUrlRewriteGenerator;
 use Zend_Db_Expr as Expr;
+use Magento\Indexer\Model\IndexerFactory;
 
 /**
  * Class Category
@@ -96,6 +97,7 @@ class Category extends Import
      * @param CategoryModel $categoryModel
      * @param CategoryUrlPathGenerator $categoryUrlPathGenerator
      * @param array $data
+     * @param IndexerFactory $indexerFactory
      */
     public function __construct(
         OutputHelper $outputHelper,
@@ -107,9 +109,10 @@ class Category extends Import
         ConfigHelper $configHelper,
         CategoryModel $categoryModel,
         CategoryUrlPathGenerator $categoryUrlPathGenerator,
-        array $data = []
+        array $data = [],
+        IndexerFactory $indexerFactory
     ) {
-        parent::__construct($outputHelper, $eventManager, $authenticator, $data);
+        parent::__construct($outputHelper, $eventManager, $authenticator, $data, $indexerFactory);
 
         $this->storeHelper    = $storeHelper;
         $this->entitiesHelper = $entitiesHelper;
@@ -654,17 +657,74 @@ class Category extends Import
     }
 
     /**
+     * Description reindexData function
+     *
+     * @return void
+     */
+    public function reindexData()
+    {
+        /** @var string $isActiveReindex */
+        $isActiveReindex = $this->configHelper->getReindexCategoryData();
+        if (!$isActiveReindex) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('Data reindexing is disable.')
+            );
+
+            return;
+        }
+
+        /** @var string $indexerProcesses */
+        $indexerProcesses = $this->configHelper->getCategoryReindexSelection();
+        if (empty($indexerProcesses)) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('No index selected.')
+            );
+
+            return;
+        }
+
+        /** @var string[] $index */
+        $index = explode(',', $indexerProcesses);
+        $this->indexerProcesses = $index;
+        $this->reindex();
+
+        $this->setMessage(
+            __('Data reindexed for : %1', join(', ', $this->indexerProcesses))
+        );
+    }
+
+    /**
      * Clean cache
      *
      * @return void
      */
     public function cleanCache()
     {
-        /** @var array $types */
-        $types = [
-            \Magento\Framework\App\Cache\Type\Block::TYPE_IDENTIFIER,
-            \Magento\PageCache\Model\Cache\Type::TYPE_IDENTIFIER
-        ];
+        /** @var  $isActiveCacheClear */
+        $isActiveCacheClear = $this->configHelper->getCategoryClearCache();
+        if (!$isActiveCacheClear) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('Cache cleaning is disable.')
+            );
+
+            return;
+        }
+
+        /** @var string $config */
+        $config = $this->configHelper->getCategoryCacheSelection();
+        if (empty($config)) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('No cache selected.')
+            );
+
+            return;
+        }
+        /** @var string[] $types */
+        $types = explode(',', $config);
 
         foreach ($types as $type) {
             $this->cacheTypeList->cleanType($type);
