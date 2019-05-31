@@ -23,7 +23,7 @@ class Indexer implements ArrayInterface
      *
      * @var array $options
      */
-    protected $options = [];
+    protected $options;
     /**
      * This variable contain Logger
      *
