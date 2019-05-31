@@ -19,6 +19,7 @@ use Pimgento\Api\Helper\Import\Entities as EntitiesHelper;
 use Pimgento\Api\Helper\Output as OutputHelper;
 use Pimgento\Api\Helper\Store as StoreHelper;
 use \Zend_Db_Expr as Expr;
+use Magento\Indexer\Model\IndexerFactory;
 
 /**
  * Class Attribute
@@ -86,6 +87,12 @@ class Attribute extends Import
      * @var EavSetup $eavSetup
      */
     protected $eavSetup;
+    /**
+     * This variable contains IndexerFactory
+     *
+     * @var IndexerFactory $indexerFactory
+     */
+    protected $indexerFactory;
 
     /**
      * Attribute constructor
@@ -101,6 +108,7 @@ class Attribute extends Import
      * @param StoreHelper $storeHelper
      * @param EavSetup $eavSetup
      * @param array $data
+     * @param IndexerFactory $indexerFactory
      */
     public function __construct(
         OutputHelper $outputHelper,
@@ -113,9 +121,10 @@ class Attribute extends Import
         TypeListInterface $cacheTypeList,
         StoreHelper $storeHelper,
         EavSetup $eavSetup,
-        array $data = []
+        array $data = [],
+        IndexerFactory $indexerFactory
     ) {
-        parent::__construct($outputHelper, $eventManager, $authenticator, $data);
+        parent::__construct($outputHelper, $eventManager, $authenticator, $data, $indexerFactory);
 
         $this->entitiesHelper  = $entitiesHelper;
         $this->configHelper    = $configHelper;
@@ -124,6 +133,7 @@ class Attribute extends Import
         $this->cacheTypeList   = $cacheTypeList;
         $this->storeHelper     = $storeHelper;
         $this->eavSetup        = $eavSetup;
+        $this->indexerFactory  = $indexerFactory;
     }
 
     /**
@@ -497,17 +507,75 @@ class Attribute extends Import
     }
 
     /**
+     * Description reindexData function
+     *
+     * @return void
+     */
+    public function reindexData()
+    {
+        /** @var string $isActiveReindex */
+        $isActiveReindex = $this->configHelper->getIsAttributeReindexActive();
+        if (!$isActiveReindex) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('Data reindexing is disable.')
+            );
+
+            return;
+        }
+
+        /** @var string $indexerProcesses */
+        $indexerProcesses = $this->configHelper->getAttributeIndexSelection();
+        if (empty($indexerProcesses)) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('No index selected.')
+            );
+
+            return;
+        }
+
+        /** @var string[] $index */
+        $index = explode(',', $indexerProcesses);
+        $this->indexerProcesses = $index;
+        $this->reindex();
+
+        $this->setMessage(
+            __('Data reindexed for : %1', join(', ', $this->indexerProcesses))
+        );
+    }
+
+    /**
      * Clean cache
      *
      * @return void
      */
     public function cleanCache()
     {
+        /** @var  $isActiveCacheClear */
+        $isActiveCacheClear = $this->configHelper->getIsAttributeClearCacheActive();
+        if (!$isActiveCacheClear) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('Cache cleaning is disable.')
+            );
+
+            return;
+        }
+
+        /** @var string $config */
+        $config = $this->configHelper->getAttributeCacheSelection();
+        if (empty($config)) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('No cache selected.')
+            );
+
+            return;
+        }
         /** @var string[] $types */
-        $types = [
-            \Magento\Framework\App\Cache\Type\Block::TYPE_IDENTIFIER,
-            \Magento\PageCache\Model\Cache\Type::TYPE_IDENTIFIER,
-        ];
+        $types = explode(',', $config);
+
         /** @var string $type */
         foreach ($types as $type) {
             $this->cacheTypeList->cleanType($type);
