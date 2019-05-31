@@ -210,6 +210,32 @@ For example :<br/>
             </group>
             <group id="category" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
                 <label>Category</label>
+                <field id="reindex_data" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Reindex data</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Reindex data after each import.</comment>
+                </field>
+                <field id="reindex_selection" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Index selection</label>
+                    <source_model>Pimgento\Api\Model\Source\Indexer</source_model>>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="reindex_data">1</field>
+                    </depends>
+                </field>
+                <field id="clear_cache" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Clear cache</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Clear cache after each import.</comment>
+                </field>
+                <field id="cache_selection" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Cache selection</label>
+                    <source_model>Pimgento\Api\Model\Source\Cache</source_model>>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="clear_cache">1</field>
+                    </depends>
+                </field>
                 <field id="is_active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Activate new categories</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -226,8 +252,63 @@ For example :<br/>
                     <comment>Newly imported categories will be in anchor mode</comment>
                 </field>
             </group>
+            <group id="family" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Family</label>
+                <field id="reindex_data" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Reindex data</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Reindex data after each import.</comment>
+                </field>
+                <field id="reindex_selection" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Index selection</label>
+                    <source_model>Pimgento\Api\Model\Source\Indexer</source_model>>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="reindex_data">1</field>
+                    </depends>
+                </field>
+                <field id="clear_cache" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Clear cache</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Clear cache after each import.</comment>
+                </field>
+                <field id="cache_selection" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Cache selection</label>
+                    <source_model>Pimgento\Api\Model\Source\Cache</source_model>>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="clear_cache">1</field>
+                    </depends>
+                </field>
+            </group>
             <group id="attribute" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
                 <label>Attributes</label>
+                <field id="reindex_data" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Reindex data</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Reindex data after each import.</comment>
+                </field>
+                <field id="reindex_selection" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Index selection</label>
+                    <source_model>Pimgento\Api\Model\Source\Indexer</source_model>>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="reindex_data">1</field>
+                    </depends>
+                </field>
+                <field id="clear_cache" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Clear cache</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Clear cache after each import.</comment>
+                </field>
+                <field id="cache_selection" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Cache selection</label>
+                    <source_model>Pimgento\Api\Model\Source\Cache</source_model>>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="clear_cache">1</field>
+                    </depends>
+                </field>
                 <field id="types" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Additional types</label>
                     <frontend_model>Pimgento\Api\Block\Adminhtml\System\Config\Form\Field\Type</frontend_model>
@@ -235,8 +316,121 @@ For example :<br/>
                     <comment>Match specific Pim type with Magento input field</comment>
                 </field>
             </group>
+            <group id="option" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Option</label>
+                <field id="reindex_data" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Reindex data</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Reindex data after each import.</comment>
+                </field>
+                <field id="reindex_selection" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Index selection</label>
+                    <source_model>Pimgento\Api\Model\Source\Indexer</source_model>>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="reindex_data">1</field>
+                    </depends>
+                </field>
+                <field id="clear_cache" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Clear cache</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Clear cache after each import.</comment>
+                </field>
+                <field id="cache_selection" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Cache selection</label>
+                    <source_model>Pimgento\Api\Model\Source\Cache</source_model>>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="clear_cache">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="product_model" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Product model</label>
+                <field id="reindex_data" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Reindex data</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Reindex data after each import.</comment>
+                </field>
+                <field id="reindex_selection" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Index selection</label>
+                    <source_model>Pimgento\Api\Model\Source\Indexer</source_model>>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="reindex_data">1</field>
+                    </depends>
+                </field>
+                <field id="clear_cache" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Clear cache</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Clear cache after each import.</comment>
+                </field>
+                <field id="cache_selection" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Cache selection</label>
+                    <source_model>Pimgento\Api\Model\Source\Cache</source_model>>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="clear_cache">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="family_variant" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Family variant</label>
+                <field id="reindex_data" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Reindex data</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Reindex data after each import.</comment>
+                </field>
+                <field id="reindex_selection" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Index selection</label>
+                    <source_model>Pimgento\Api\Model\Source\Indexer</source_model>>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="reindex_data">1</field>
+                    </depends>
+                </field>
+                <field id="clear_cache" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Clear cache</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Clear cache after each import.</comment>
+                </field>
+                <field id="cache_selection" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Cache selection</label>
+                    <source_model>Pimgento\Api\Model\Source\Cache</source_model>>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="clear_cache">1</field>
+                    </depends>
+                </field>
+            </group>
             <group id="product" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
                 <label>Products</label>
+                <field id="reindex_data" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Reindex data</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Reindex data after each import.</comment>
+                </field>
+                <field id="reindex_selection" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Index selection</label>
+                    <source_model>Pimgento\Api\Model\Source\Indexer</source_model>>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="reindex_data">1</field>
+                    </depends>
+                </field>
+                <field id="clear_cache" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Clear cache</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Clear cache after each import.</comment>
+                </field>
+                <field id="cache_selection" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Cache selection</label>
+                    <source_model>Pimgento\Api\Model\Source\Cache</source_model>>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="clear_cache">1</field>
+                    </depends>
+                </field>
                 <field id="attribute_mapping" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Attribute Mapping</label>
                     <frontend_model>Pimgento\Api\Block\Adminhtml\System\Config\Form\Field\Attribute</frontend_model>
