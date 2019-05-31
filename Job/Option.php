@@ -21,6 +21,7 @@ use Pimgento\Api\Helper\Import\Entities as EntitiesHelper;
 use Pimgento\Api\Helper\Output as OutputHelper;
 use Pimgento\Api\Helper\Store as StoreHelper;
 use \Zend_Db_Expr as Expr;
+use Magento\Indexer\Model\IndexerFactory;
 
 /**
  * Class Option
@@ -94,23 +95,28 @@ class Option extends Import
      * @var TypeListInterface $cacheTypeList
      */
     protected $cacheTypeList;
+    /**
+     * This variable contains IndexerFactory
+     *
+     * @var IndexerFactory $indexerFactory
+     */
+    protected $indexerFactory;
 
     /**
      * Option constructor
      *
-     * @param OutputHelper      $outputHelper
-     * @param ManagerInterface  $eventManager
-     * @param Authenticator     $authenticator
-     * @param EntitiesHelper    $entitiesHelper
-     * @param ConfigHelper      $configHelper
-     * @param Config            $eavConfig
-     * @param AttributeHelper   $attributeHelper
+     * @param OutputHelper $outputHelper
+     * @param ManagerInterface $eventManager
+     * @param Authenticator $authenticator
+     * @param EntitiesHelper $entitiesHelper
+     * @param ConfigHelper $configHelper
+     * @param Config $eavConfig
+     * @param AttributeHelper $attributeHelper
      * @param TypeListInterface $cacheTypeList
-     * @param StoreHelper       $storeHelper
-     * @param EavSetup          $eavSetup
-     * @param array             $data
-     *
-     * @throws LocalizedException
+     * @param StoreHelper $storeHelper
+     * @param EavSetup $eavSetup
+     * @param array $data
+     * @param IndexerFactory $indexerFactory
      */
     public function __construct(
         OutputHelper $outputHelper,
@@ -123,9 +129,10 @@ class Option extends Import
         TypeListInterface $cacheTypeList,
         StoreHelper $storeHelper,
         EavSetup $eavSetup,
-        array $data = []
+        array $data = [],
+        IndexerFactory $indexerFactory
     ) {
-        parent::__construct($outputHelper, $eventManager, $authenticator, $data);
+        parent::__construct($outputHelper, $eventManager, $authenticator, $data, $indexerFactory);
 
         $this->entitiesHelper  = $entitiesHelper;
         $this->configHelper    = $configHelper;
@@ -134,6 +141,7 @@ class Option extends Import
         $this->cacheTypeList   = $cacheTypeList;
         $this->storeHelper     = $storeHelper;
         $this->eavSetup        = $eavSetup;
+        $this->indexerFactory  = $indexerFactory;
     }
 
     /**
@@ -309,17 +317,75 @@ class Option extends Import
     }
 
     /**
+     * Description reindexData function
+     *
+     * @return void
+     */
+    public function reindexData()
+    {
+        /** @var string $isActiveReindex */
+        $isActiveReindex = $this->configHelper->getIsOptionReindexActive();
+        if (!$isActiveReindex) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('Data reindexing is disable.')
+            );
+
+            return;
+        }
+
+        /** @var string $indexerProcesses */
+        $indexerProcesses = $this->configHelper->getOptionIndexSelection();
+        if (empty($indexerProcesses)) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('No index selected.')
+            );
+
+            return;
+        }
+
+        /** @var string[] $index */
+        $index = explode(',', $indexerProcesses);
+        $this->indexerProcesses = $index;
+        $this->reindex();
+
+        $this->setMessage(
+            __('Data reindexed for : %1', join(', ', $this->indexerProcesses))
+        );
+    }
+
+    /**
      * Clean cache
      *
      * @return void
      */
     public function cleanCache()
     {
+        /** @var  $isActiveCacheClear */
+        $isActiveCacheClear = $this->configHelper->getIsOptionCacheClearActive();
+        if (!$isActiveCacheClear) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('Cache cleaning is disable.')
+            );
+
+            return;
+        }
+
+        /** @var string $config */
+        $config = $this->configHelper->getOptionCacheSelection();
+        if (empty($config)) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('No cache selected.')
+            );
+
+            return;
+        }
         /** @var string[] $types */
-        $types = [
-            BlockCacheType::TYPE_IDENTIFIER,
-            PageCacheType::TYPE_IDENTIFIER,
-        ];
+        $types = explode(',', $config);
+
         /** @var string $type */
         foreach ($types as $type) {
             $this->cacheTypeList->cleanType($type);
