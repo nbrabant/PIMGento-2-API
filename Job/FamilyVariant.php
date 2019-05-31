@@ -17,6 +17,7 @@ use Pimgento\Api\Helper\Config as ConfigHelper;
 use Pimgento\Api\Helper\Import\FamilyVariant as FamilyVariantHelper;
 use Zend_Db_Expr as Expr;
 use Pimgento\Api\Helper\Output as OutputHelper;
+use Magento\Indexer\Model\IndexerFactory;
 
 /**
  * Class FamilyVariant
@@ -70,18 +71,25 @@ class FamilyVariant extends Import
      * @var Config $eavConfig
      */
     protected $eavConfig;
+    /**
+     * This variable contains IndexerFactory
+     *
+     * @var IndexerFactory $indexerFactory
+     */
+    protected $indexerFactory;
 
     /**
      * FamilyVariant constructor
      *
      * @param FamilyVariantHelper $entitiesHelper
-     * @param ConfigHelper        $configHelper
-     * @param OutputHelper        $outputHelper
-     * @param ManagerInterface    $eventManager
-     * @param Authenticator       $authenticator
-     * @param TypeListInterface   $cacheTypeList
-     * @param Config              $eavConfig
-     * @param array               $data
+     * @param ConfigHelper $configHelper
+     * @param OutputHelper $outputHelper
+     * @param ManagerInterface $eventManager
+     * @param Authenticator $authenticator
+     * @param TypeListInterface $cacheTypeList
+     * @param Config $eavConfig
+     * @param array $data
+     * @param IndexerFactory $indexerFactory
      */
     public function __construct(
         FamilyVariantHelper $entitiesHelper,
@@ -91,14 +99,16 @@ class FamilyVariant extends Import
         Authenticator $authenticator,
         TypeListInterface $cacheTypeList,
         Config $eavConfig,
-        array $data = []
+        array $data = [],
+        IndexerFactory $indexerFactory
     ) {
-        parent::__construct($outputHelper, $eventManager, $authenticator, $data);
+        parent::__construct($outputHelper, $eventManager, $authenticator, $data, $indexerFactory);
 
         $this->configHelper   = $configHelper;
         $this->entitiesHelper = $entitiesHelper;
         $this->cacheTypeList  = $cacheTypeList;
         $this->eavConfig      = $eavConfig;
+        $this->indexerFactory = $indexerFactory;
     }
 
     /**

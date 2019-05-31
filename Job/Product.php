@@ -30,6 +30,7 @@ use Pimgento\Api\Helper\Serializer as JsonSerializer;
 use Pimgento\Api\Helper\Import\Product as ProductImportHelper;
 use Zend_Db_Expr as Expr;
 use Zend_Db_Statement_Pdo;
+use Magento\Indexer\Model\IndexerFactory;
 
 /**
  * Class Product
@@ -183,23 +184,30 @@ class Product extends Import
      * @var StoreHelper $storeHelper
      */
     protected $storeHelper;
+    /**
+     * This variable contains IndexerFactory
+     *
+     * @var IndexerFactory $indexerFactory
+     */
+    protected $indexerFactory;
 
     /**
      * Product constructor.
      *
-     * @param OutputHelper            $outputHelper
-     * @param ManagerInterface        $eventManager
-     * @param Authenticator           $authenticator
-     * @param ProductImportHelper     $entitiesHelper
-     * @param ConfigHelper            $configHelper
-     * @param ProductFilters          $productFilters
-     * @param ScopeConfigInterface    $scopeConfig
-     * @param JsonSerializer          $serializer
-     * @param ProductModel            $product
+     * @param OutputHelper $outputHelper
+     * @param ManagerInterface $eventManager
+     * @param Authenticator $authenticator
+     * @param ProductImportHelper $entitiesHelper
+     * @param ConfigHelper $configHelper
+     * @param ProductFilters $productFilters
+     * @param ScopeConfigInterface $scopeConfig
+     * @param JsonSerializer $serializer
+     * @param ProductModel $product
      * @param ProductUrlPathGenerator $productUrlPathGenerator
-     * @param TypeListInterface       $cacheTypeList
-     * @param StoreHelper             $storeHelper
-     * @param array                   $data
+     * @param TypeListInterface $cacheTypeList
+     * @param StoreHelper $storeHelper
+     * @param array $data
+     * @param IndexerFactory $indexerFactory
      */
     public function __construct(
         OutputHelper $outputHelper,
@@ -214,9 +222,10 @@ class Product extends Import
         ProductUrlPathGenerator $productUrlPathGenerator,
         TypeListInterface $cacheTypeList,
         StoreHelper $storeHelper,
-        array $data = []
+        array $data = [],
+        IndexerFactory $indexerFactory
     ) {
-        parent::__construct($outputHelper, $eventManager, $authenticator, $data);
+        parent::__construct($outputHelper, $eventManager, $authenticator, $data, $indexerFactory);
 
         $this->entitiesHelper          = $entitiesHelper;
         $this->configHelper            = $configHelper;
@@ -227,6 +236,7 @@ class Product extends Import
         $this->cacheTypeList           = $cacheTypeList;
         $this->storeHelper             = $storeHelper;
         $this->productUrlPathGenerator = $productUrlPathGenerator;
+        $this->indexerFactory          = $indexerFactory;
     }
 
     /**

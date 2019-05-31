@@ -10,6 +10,7 @@ use Magento\Framework\Phrase;
 use Pimgento\Api\Api\Data\ImportInterface;
 use Pimgento\Api\Helper\Authenticator;
 use Pimgento\Api\Helper\Output as OutputHelper;
+use Magento\Indexer\Model\IndexerFactory;
 
 /**
  * Class Import
@@ -101,6 +102,18 @@ abstract class Import extends DataObject implements ImportInterface
      * @var bool $isEnterprise
      */
     protected $isEnterprise = false;
+    /**
+     * This variable contains IndexerFactory
+     *
+     * @var IndexerFactory $indexerFactory
+     */
+    protected $indexerFactory;
+    /**
+     * Current import Indexer processes list
+     *
+     * @var $indexerProcesses string[]
+     */
+    protected $indexerProcesses;
 
     /**
      * Import constructor.
@@ -114,7 +127,8 @@ abstract class Import extends DataObject implements ImportInterface
         OutputHelper $outputHelper,
         ManagerInterface $eventManager,
         Authenticator $authenticator,
-        array $data = []
+        array $data = [],
+        IndexerFactory $indexerFactory
     ) {
         parent::__construct($data);
 
@@ -128,6 +142,7 @@ abstract class Import extends DataObject implements ImportInterface
         $this->step         = 0;
         $this->initStatus();
         $this->initSteps();
+        $this->indexerFactory = $indexerFactory;
     }
 
     /**
@@ -544,5 +559,23 @@ abstract class Import extends DataObject implements ImportInterface
         }
 
         return $response;
+    }
+
+    /**
+     * Reindex data for given index id
+     *
+     * @return void
+     */
+    public function reindex()
+    {
+        /** @var \Magento\Indexer\Model\Indexer $indexer */
+        $indexer = $this->indexerFactory->create();
+        /** @var string[] $indexerProcesses */
+        $indexerProcesses = $this->indexerProcesses;
+        foreach ($indexerProcesses as $id) {
+            $indexer->load($id);
+        }
+
+        $indexer->reindexAll();
     }
 }

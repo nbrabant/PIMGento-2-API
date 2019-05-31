@@ -12,6 +12,7 @@ use Pimgento\Api\Helper\Authenticator;
 use Pimgento\Api\Helper\Config as ConfigHelper;
 use Pimgento\Api\Helper\Import\Entities as EntitiesHelper;
 use Pimgento\Api\Helper\Output as OutputHelper;
+use Magento\Indexer\Model\IndexerFactory;
 
 /**
  * Class ProductModel
@@ -60,17 +61,24 @@ class ProductModel extends Import
      * @var Config $eavConfig
      */
     protected $eavConfig;
+    /**
+     * This variable contains IndexerFactory
+     *
+     * @var IndexerFactory $indexerFactory
+     */
+    protected $indexerFactory;
 
     /**
      * ProductModel constructor
      *
-     * @param OutputHelper                        $outputHelper
-     * @param ManagerInterface                    $eventManager
-     * @param Authenticator                       $authenticator
+     * @param OutputHelper $outputHelper
+     * @param ManagerInterface $eventManager
+     * @param Authenticator $authenticator
      * @param \Pimgento\Api\Helper\Import\Product $entitiesHelper
-     * @param ConfigHelper                        $configHelper
-     * @param Config                              $eavConfig
-     * @param array                               $data
+     * @param ConfigHelper $configHelper
+     * @param Config $eavConfig
+     * @param array $data
+     * @param IndexerFactory $indexerFactory
      */
     public function __construct(
         OutputHelper $outputHelper,
@@ -79,13 +87,15 @@ class ProductModel extends Import
         \Pimgento\Api\Helper\Import\Product $entitiesHelper,
         ConfigHelper $configHelper,
         Config $eavConfig,
-        array $data = []
+        array $data = [],
+        IndexerFactory $indexerFactory
     ) {
-        parent::__construct($outputHelper, $eventManager, $authenticator, $data);
+        parent::__construct($outputHelper, $eventManager, $authenticator, $data, $indexerFactory);
 
         $this->entitiesHelper  = $entitiesHelper;
         $this->configHelper    = $configHelper;
         $this->eavConfig       = $eavConfig;
+        $this->indexerFactory  = $indexerFactory;
     }
 
     /**
