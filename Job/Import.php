@@ -566,7 +566,7 @@ abstract class Import extends DataObject implements ImportInterface
      *
      * @return void
      */
-    public function reindex()
+    public function reindex(): void
     {
         /** @var \Magento\Indexer\Model\Indexer $indexer */
         $indexer = $this->indexerFactory->create();

@@ -307,11 +307,11 @@ class Family extends Import
     }
 
     /**
-     * Description reindexData function
+     * Reindex selected data
      *
      * @return void
      */
-    public function reindexData()
+    public function reindexData(): void
     {
         /** @var string $isActiveReindex */
         $isActiveReindex = $this->configHelper->getIsFamilyReindexActive();
@@ -350,7 +350,7 @@ class Family extends Import
      *
      * @return void
      */
-    public function cleanCache()
+    public function cleanCache(): void
     {
         /** @var  $isActiveCacheClear */
         $isActiveCacheClear = $this->configHelper->getIsFamilyClearCacheActive();

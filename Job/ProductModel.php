@@ -331,7 +331,7 @@ class ProductModel extends Import
     }
 
     /**
-     * Description reindexData function
+     * Reindex selected data
      *
      * @return void
      */
