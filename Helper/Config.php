@@ -72,6 +72,10 @@ class Config extends AbstractHelper
     const PRODUCT_MEDIA_GALLERY = 'pimgento/product/media_gallery';
     const PRODUCT_ASSET_ENABLED = 'pimgento/product/asset_enabled';
     const PRODUCT_ASSET_GALLERY = 'pimgento/product/asset_gallery';
+    const PRODUCT_REINDEX_DATA = 'pimgento/product/reindex_data';
+    const PRODUCT_REINDEX_SELECTION = 'pimgento/product/reindex_selection';
+    const PRODUCT_CLEAR_CACHE = 'pimgento/product/clear_cache';
+    const PRODUCT_CACHE_SELECTION = 'pimgento/product/cache_selection';
     const ATTRIBUTE_TYPES = 'pimgento/attribute/types';
     const ATTRIBUTE_REINDEX_DATA = 'pimgento/attribute/reindex_data';
     const ATTRIBUTE_REINDEX_SELECTION = 'pimgento/attribute/reindex_selection';
@@ -613,6 +617,46 @@ class Config extends AbstractHelper
     public function getFamilyVariantCacheSelection()
     {
         return $this->scopeConfig->getValue(self::FAMILY_VARIANT_CACHE_SELECTION);
+    }
+
+    /**
+     * Retrieve product reindex activation after import
+     *
+     * @return string
+     */
+    public function getIsProductReindexActive()
+    {
+        return $this->scopeConfig->getValue(self::PRODUCT_REINDEX_DATA);
+    }
+
+    /**
+     * Retrieve product index selection
+     *
+     * @return string
+     */
+    public function getProductIndexSelection()
+    {
+        return $this->scopeConfig->getValue(self::PRODUCT_REINDEX_SELECTION);
+    }
+
+    /**
+     * Retrieve product clear cache activation after import
+     *
+     * @return string
+     */
+    public function getIsProductCacheClearActive()
+    {
+        return $this->scopeConfig->getValue(self::PRODUCT_CLEAR_CACHE);
+    }
+
+    /**
+     * Retrieve product cache selection
+     *
+     * @return string
+     */
+    public function getProductCacheSelection()
+    {
+        return $this->scopeConfig->getValue(self::PRODUCT_CACHE_SELECTION);
     }
 
     /**

@@ -2014,18 +2014,37 @@ class Product extends Import
      */
     public function cleanCache()
     {
-        /** @var array $types */
-        $types = [
-            Block::TYPE_IDENTIFIER,
-            Type::TYPE_IDENTIFIER,
-        ];
+        /** @var  $isActiveCacheClear */
+        $isActiveCacheClear = $this->configHelper->getIsProductCacheClearActive();
+        if (!$isActiveCacheClear) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('Cache cleaning is disable.')
+            );
 
-        /** @var string $type */
+            return;
+        }
+
+        /** @var string $config */
+        $config = $this->configHelper->getProductCacheSelection();
+        if (empty($config)) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('No cache selected.')
+            );
+
+            return;
+        }
+        /** @var string[] $types */
+        $types = explode(',', $config);
+
         foreach ($types as $type) {
             $this->cacheTypeList->cleanType($type);
         }
 
-        $this->setMessage(__('Cache cleaned for: %1', join(', ', $types)));
+        $this->setMessage(
+            __('Cache cleaned for: %1', join(', ', $types))
+        );
     }
 
     /**
@@ -2047,5 +2066,44 @@ class Product extends Import
         }
 
         return $this->filters;
+    }
+
+    /**
+     * Description reindexData function
+     *
+     * @return void
+     */
+    public function reindexData()
+    {
+        /** @var string $isActiveReindex */
+        $isActiveReindex = $this->configHelper->getIsProductReindexActive();
+        if (!$isActiveReindex) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('Data reindexing is disable.')
+            );
+
+            return;
+        }
+
+        /** @var string $indexerProcesses */
+        $indexerProcesses = $this->configHelper->getProductIndexSelection();
+        if (empty($indexerProcesses)) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('No index selected.')
+            );
+
+            return;
+        }
+
+        /** @var string[] $index */
+        $index = explode(',', $indexerProcesses);
+        $this->indexerProcesses = $index;
+        $this->reindex();
+
+        $this->setMessage(
+            __('Data reindexed for : %1', join(', ', $this->indexerProcesses))
+        );
     }
 }
