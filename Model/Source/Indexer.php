@@ -29,7 +29,7 @@ class Indexer implements ArrayInterface
      *
      * @var LoggerInterface $logger
      */
-    private $logger;
+    protected $logger;
     /**
      * This variable contains CollectionFactory
      *
@@ -41,7 +41,7 @@ class Indexer implements ArrayInterface
      * Indexer constructor
      *
      * @param CollectionFactory $indexerCollectionFactory
-     * @param LoggerInterface $logger
+     * @param LoggerInterface   $logger
      */
     public function __construct(
         CollectionFactory $indexerCollectionFactory,
