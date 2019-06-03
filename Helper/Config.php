@@ -85,6 +85,10 @@ class Config extends AbstractHelper
     const OPTION_REINDEX_SELECTION = 'pimgento/option/reindex_selection';
     const OPTION_CLEAR_CACHE = 'pimgento/option/clear_cache';
     const OPTION_CACHE_SELECTION = 'pimgento/option/cache_selection';
+    const PRODUCT_MODEL_REINDEX_DATA = 'pimgento/product_model/reindex_data';
+    const PRODUCT_MODEL_REINDEX_SELECTION = 'pimgento/product_model/reindex_selection';
+    const PRODUCT_MODEL_CLEAR_CACHE = 'pimgento/product_model/clear_cache';
+    const PRODUCT_MODEL_CACHE_SELECTION = 'pimgento/product_model/cache_selection';
 
     /**
      * @var int PAGINATION_SIZE_DEFAULT_VALUE
@@ -525,6 +529,46 @@ class Config extends AbstractHelper
     public function getOptionCacheSelection()
     {
         return $this->scopeConfig->getValue(self::OPTION_CACHE_SELECTION);
+    }
+
+    /**
+     * Retrieve product model reindex activation after import
+     *
+     * @return string
+     */
+    public function getIsProductModelReindexActive()
+    {
+        return $this->scopeConfig->getValue(self::PRODUCT_MODEL_REINDEX_DATA);
+    }
+
+    /**
+     * Retrieve product model index selection
+     *
+     * @return string
+     */
+    public function getProductModelIndexSelection()
+    {
+        return $this->scopeConfig->getValue(self::PRODUCT_MODEL_REINDEX_SELECTION);
+    }
+
+    /**
+     * Retrieve product model clear cache activation after import
+     *
+     * @return string
+     */
+    public function getIsProductModelCacheClearActive()
+    {
+        return $this->scopeConfig->getValue(self::PRODUCT_MODEL_CLEAR_CACHE);
+    }
+
+    /**
+     * Retrieve product model cache selection
+     *
+     * @return string
+     */
+    public function getProductModelCacheSelection()
+    {
+        return $this->scopeConfig->getValue(self::PRODUCT_MODEL_CACHE_SELECTION);
     }
 
     /**

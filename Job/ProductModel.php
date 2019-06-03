@@ -13,6 +13,7 @@ use Pimgento\Api\Helper\Config as ConfigHelper;
 use Pimgento\Api\Helper\Import\Entities as EntitiesHelper;
 use Pimgento\Api\Helper\Output as OutputHelper;
 use Magento\Indexer\Model\IndexerFactory;
+use Magento\Framework\App\Cache\TypeListInterface;
 
 /**
  * Class ProductModel
@@ -67,6 +68,12 @@ class ProductModel extends Import
      * @var IndexerFactory $indexerFactory
      */
     protected $indexerFactory;
+    /**
+     * This variable contains a TypeListInterface
+     *
+     * @var TypeListInterface $cacheTypeList
+     */
+    protected $cacheTypeList;
 
     /**
      * ProductModel constructor
@@ -79,6 +86,7 @@ class ProductModel extends Import
      * @param Config $eavConfig
      * @param array $data
      * @param IndexerFactory $indexerFactory
+     * @param TypeListInterface $cacheTypeList
      */
     public function __construct(
         OutputHelper $outputHelper,
@@ -88,7 +96,8 @@ class ProductModel extends Import
         ConfigHelper $configHelper,
         Config $eavConfig,
         array $data = [],
-        IndexerFactory $indexerFactory
+        IndexerFactory $indexerFactory,
+        TypeListInterface $cacheTypeList
     ) {
         parent::__construct($outputHelper, $eventManager, $authenticator, $data, $indexerFactory);
 
@@ -96,6 +105,7 @@ class ProductModel extends Import
         $this->configHelper    = $configHelper;
         $this->eavConfig       = $eavConfig;
         $this->indexerFactory  = $indexerFactory;
+        $this->cacheTypeList   = $cacheTypeList;
     }
 
     /**
@@ -318,5 +328,84 @@ class ProductModel extends Import
             ->getEntityTypeId();
 
         return $productEntityTypeId;
+    }
+
+    /**
+     * Description reindexData function
+     *
+     * @return void
+     */
+    public function reindexData()
+    {
+        /** @var string $isActiveReindex */
+        $isActiveReindex = $this->configHelper->getIsProductModelReindexActive();
+        if (!$isActiveReindex) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('Data reindexing is disable.')
+            );
+
+            return;
+        }
+
+        /** @var string $indexerProcesses */
+        $indexerProcesses = $this->configHelper->getProductModelIndexSelection();
+        if (empty($indexerProcesses)) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('No index selected.')
+            );
+
+            return;
+        }
+
+        /** @var string[] $index */
+        $index = explode(',', $indexerProcesses);
+        $this->indexerProcesses = $index;
+        $this->reindex();
+
+        $this->setMessage(
+            __('Data reindexed for : %1', join(', ', $this->indexerProcesses))
+        );
+    }
+
+    /**
+     * Clean cache
+     *
+     * @return void
+     */
+    public function cleanCache()
+    {
+        /** @var  $isActiveCacheClear */
+        $isActiveCacheClear = $this->configHelper->getIsProductModelCacheClearActive();
+        if (!$isActiveCacheClear) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('Cache cleaning is disable.')
+            );
+
+            return;
+        }
+
+        /** @var string $config */
+        $config = $this->configHelper->getProductModelCacheSelection();
+        if (empty($config)) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('No cache selected.')
+            );
+
+            return;
+        }
+        /** @var string[] $types */
+        $types = explode(',', $config);
+
+        foreach ($types as $type) {
+            $this->cacheTypeList->cleanType($type);
+        }
+
+        $this->setMessage(
+            __('Cache cleaned for: %1', join(', ', $types))
+        );
     }
 }

@@ -281,6 +281,14 @@
                         <item name="method" xsi:type="string">dropTable</item>
                         <item name="comment" xsi:type="string">Drop temporary table</item>
                     </item>
+                    <item name="7" xsi:type="array">
+                        <item name="method" xsi:type="string">reindexData</item>
+                        <item name="comment" xsi:type="string">Reindex data</item>
+                    </item>
+                    <item name="8" xsi:type="array">
+                        <item name="method" xsi:type="string">cleanCache</item>
+                        <item name="comment" xsi:type="string">Clean cache</item>
+                    </item>
                 </item>
             </argument>
         </arguments>
@@ -382,6 +390,11 @@
         <arguments>
             <argument name="componentRegistrar" xsi:type="object">Magento\Framework\Component\ComponentRegistrarInterface</argument>
             <argument name="readFactory" xsi:type="object">Magento\Framework\Filesystem\Directory\ReadFactory</argument>
+        </arguments>
+    </type>
+    <type name="Pimgento\Api\Job\ProductModel" shared="false">
+        <arguments>
+            <argument name="cacheTypeList" xsi:type="object">Magento\Framework\App\Cache\TypeListInterface</argument>
         </arguments>
     </type>
 </config>
