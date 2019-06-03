@@ -159,6 +159,10 @@
                         <item name="comment" xsi:type="string">Drop temporary table</item>
                     </item>
                     <item name="6" xsi:type="array">
+                        <item name="method" xsi:type="string">reindexData</item>
+                        <item name="comment" xsi:type="string">Reindex data</item>
+                    </item>
+                    <item name="7" xsi:type="array">
                         <item name="method" xsi:type="string">cleanCache</item>
                         <item name="comment" xsi:type="string">Clean cache</item>
                     </item>

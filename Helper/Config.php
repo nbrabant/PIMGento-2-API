@@ -89,6 +89,10 @@ class Config extends AbstractHelper
     const PRODUCT_MODEL_REINDEX_SELECTION = 'pimgento/product_model/reindex_selection';
     const PRODUCT_MODEL_CLEAR_CACHE = 'pimgento/product_model/clear_cache';
     const PRODUCT_MODEL_CACHE_SELECTION = 'pimgento/product_model/cache_selection';
+    const FAMILY_VARIANT_REINDEX_DATA = 'pimgento/family_variant/reindex_data';
+    const FAMILY_VARIANT_REINDEX_SELECTION = 'pimgento/family_variant/reindex_selection';
+    const FAMILY_VARIANT_CLEAR_CACHE = 'pimgento/family_variant/clear_cache';
+    const FAMILY_VARIANT_CACHE_SELECTION = 'pimgento/family_variant/cache_selection';
 
     /**
      * @var int PAGINATION_SIZE_DEFAULT_VALUE
@@ -569,6 +573,46 @@ class Config extends AbstractHelper
     public function getProductModelCacheSelection()
     {
         return $this->scopeConfig->getValue(self::PRODUCT_MODEL_CACHE_SELECTION);
+    }
+
+    /**
+     * Retrieve family variant reindex activation after import
+     *
+     * @return string
+     */
+    public function getIsFamilyVariantReindexActive()
+    {
+        return $this->scopeConfig->getValue(self::FAMILY_VARIANT_REINDEX_DATA);
+    }
+
+    /**
+     * Retrieve family variant index selection
+     *
+     * @return string
+     */
+    public function getFamilyVariantIndexSelection()
+    {
+        return $this->scopeConfig->getValue(self::FAMILY_VARIANT_REINDEX_SELECTION);
+    }
+
+    /**
+     * Retrieve family variant clear cache activation after import
+     *
+     * @return string
+     */
+    public function getIsFamilyVariantCacheClearActive()
+    {
+        return $this->scopeConfig->getValue(self::FAMILY_VARIANT_CLEAR_CACHE);
+    }
+
+    /**
+     * Retrieve family variant cache selection
+     *
+     * @return string
+     */
+    public function getFamilyVariantCacheSelection()
+    {
+        return $this->scopeConfig->getValue(self::FAMILY_VARIANT_CACHE_SELECTION);
     }
 
     /**
