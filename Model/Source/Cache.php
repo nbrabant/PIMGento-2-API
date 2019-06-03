@@ -10,7 +10,7 @@ use Psr\Log\LoggerInterface;
  * Class Cache
  *
  * @category  Class
- * @package   Cache
+ * @package   Pimgento\Api\Model\Source
  * @author    Agence Dn'D <contact@dnd.fr>
  * @copyright 2019 Agence Dn'D
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
