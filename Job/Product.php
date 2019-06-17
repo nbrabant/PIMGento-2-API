@@ -469,6 +469,14 @@ class Product extends Import
                     $pimAttribute . '-' . $local,
                     $magentoAttribute . '-' . $local
                 );
+
+                if ($connection->tableColumnExists($tmpTable, 'url_key-' . $local)) {
+                    $connection->update(
+                        $tmpTable,
+                        ['url_key-' . $local => new Expr('`url_key`')],
+                        '`url_key-' . $local . '` IS NULL'
+                    );
+                }
             }
         }
     }
@@ -1437,7 +1445,7 @@ class Product extends Import
          * @var array  $affected
          */
         foreach ($stores as $local => $affected) {
-            if (!$isUrlKeyMapped && !$connection->tableColumnExists($tmpTable, 'url_key-' . $local)) {
+            if (!$isUrlKeyMapped || !$connection->tableColumnExists($tmpTable, 'url_key-' . $local)) {
                 $connection->addColumn(
                     $tmpTable,
                     'url_key-' . $local,
