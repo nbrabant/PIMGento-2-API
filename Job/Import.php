@@ -548,7 +548,7 @@ abstract class Import extends DataObject implements ImportInterface
      *
      * @return string
      */
-    public function checkLabelPerLocales(array $entity, array $lang, string $response): string
+    public function checkLabelPerLocales(array $entity, array $lang, string $response)
     {
         /** @var string[] $labels */
         $labels = $entity['labels'];
@@ -566,7 +566,7 @@ abstract class Import extends DataObject implements ImportInterface
      *
      * @return void
      */
-    public function reindex(): void
+    public function reindex()
     {
         /** @var string[] $indexerProcesses */
         $indexerProcesses = $this->indexerProcesses;
@@ -576,5 +576,77 @@ abstract class Import extends DataObject implements ImportInterface
             $indexer->load($id);
             $indexer->reindexAll();
         }
+    }
+
+
+    /**
+     * Reindex selected data
+     *
+     * @return void
+     */
+    public function reindexData($isActiveReindex, $indexerProcesses)
+    {
+        if (!$isActiveReindex) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('Data reindexing is disabled.')
+            );
+
+            return;
+        }
+
+        if (empty($indexerProcesses)) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('No index selected.')
+            );
+
+            return;
+        }
+
+        /** @var string[] $index */
+        $index = explode(',', $indexerProcesses);
+        $this->indexerProcesses = $index;
+        $this->reindex();
+
+        $this->setMessage(
+            __('Data reindexed for: %1', join(', ', $this->indexerProcesses))
+        );
+    }
+
+    /**
+     * Clean cache
+     *
+     * @return void
+     */
+    public function cleanCache($isActiveCacheClear, $config)
+    {
+        if (!$isActiveCacheClear) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('Cache cleaning is disable.')
+            );
+
+            return;
+        }
+
+        if (empty($config)) {
+            $this->setStatus(false);
+            $this->setMessage(
+                __('No cache selected.')
+            );
+
+            return;
+        }
+        /** @var string[] $types */
+        $types = explode(',', $config);
+
+        foreach ($types as $type) {
+            $this->cacheTypeList->cleanType($type);
+        }
+
+        $this->setMessage(
+            __('Cache cleaned for: %1', join(', ', $types))
+        );
     }
 }

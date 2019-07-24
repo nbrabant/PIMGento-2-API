@@ -661,14 +661,14 @@ class Category extends Import
      *
      * @return void
      */
-    public function reindexData(): void
+    public function reindexData()
     {
         /** @var string $isActiveReindex */
         $isActiveReindex = $this->configHelper->getReindexCategoryData();
         if (!$isActiveReindex) {
             $this->setStatus(false);
             $this->setMessage(
-                __('Data reindexing is disable.')
+                __('Data reindexing is disabled.')
             );
 
             return;
@@ -691,7 +691,7 @@ class Category extends Import
         $this->reindex();
 
         $this->setMessage(
-            __('Data reindexed for : %1', join(', ', $this->indexerProcesses))
+            __('Data reindexed for: %1', join(', ', $this->indexerProcesses))
         );
     }
 
@@ -700,7 +700,7 @@ class Category extends Import
      *
      * @return void
      */
-    public function cleanCache(): void
+    public function cleanCache()
     {
         /** @var  $isActiveCacheClear */
         $isActiveCacheClear = $this->configHelper->getCategoryClearCache();
